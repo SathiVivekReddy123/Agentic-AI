@@ -1,0 +1,10 @@
+
+Test ID,Customer Message,Expected Behaviour
+1,What is the price of 2 chicken biryanis?,Display the correct price
+2,Is veg burger available?,Check and display availability
+3,I want 2 chicken biryanis for takeaway.,Ask for customer name
+4,Do you sell donuts?,Explain item is not on the menu
+5,My name is Rahul. I want 0 veg burgers for takeaway.,Reject invalid quantity
+6,I'm Ravi. I want 2 chicken biryanis for takeaway. I confirm please place my order.,Validate and save confirmed order
+7,Is farmhouse pizza available?,Report unavailable item
+8,I want two sandwiches.,Ask for specific sandwich and missing details
