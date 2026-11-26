@@ -24,6 +24,23 @@ Repository for daily tasks, progressive agent architectures, and hands-on implem
   - **Error Resilience:** Wrapping Groq API (`openai/gpt-oss-120b`) and tool calls in `try` / `except` blocks to gracefully handle `RateLimitError`, `APIConnectionError`, and invalid arguments (`ValueError`, `TypeError`, `KeyError`).
   - **Interactive Ordering Loop:** Multi-turn console chatbot (`You:` / `Bot:`) supporting menu exploration, cart additions/removals/quantity updates, cart viewing, and total bill calculation.
 
-## 🔑 Setup & API Keys
+### [DAY 3] LangChain LCEL Assistant & Automated CSV Testing
+- **Notebook:** [`Day3/agentic_AI_day3.ipynb`](./Day3/agentic_AI_day3.ipynb)
+- **Test Dataset:** [`Day3/test.csv`](./Day3/test.csv)
+- **Domain:** Spice Garden Restaurant (Menu Q&A & Order Assistant)
+- **Concepts & Implementation:**
+  - **Groq LLM via LangChain:** Configuring `ChatGroq` (`openai/gpt-oss-120b`, `temperature=0.3`) with runtime `getpass` API key setup.
+  - **Prompt Engineering & Template Escaping:** Applying the 4-pillar system prompt (Role, Facts with JSON `MENU` in ₹, opening hours `11 AM to 10 PM` all days, delivery rules with ₹200 minimum and ₹30 charge; Rules; Format under 50 words in English or Telugu) and escaping curly braces (`{{` / `}}`) for `ChatPromptTemplate`.
+  - **LCEL Chain & Conversation History:** Building a `ChatPromptTemplate` (with `MessagesPlaceholder("history")`) | `llm` | `StrOutputParser()` pipeline with an interactive `ask()` loop (`You:` / `Bot:`).
+  - **Automated CSV Evaluation:** Implementing `run_tests()` (`csv.DictReader` and `pandas`) to evaluate 13 benchmark questions from [`Day3/test.csv`](./Day3/test.csv) against `must_include` assertions (achieving 10/13 in the recorded run).
 
-All tasks use the same Groq API Key (`GROQ_API_KEY`).
+### [DAY 4] Tool-Calling Agent, Pydantic Validation & Google Sheets Persistence
+- **Notebook:** [`Day4/agentic_AI_day4.ipynb`](./Day4/agentic_AI_day4.ipynb)
+- **Test Dataset:** [`Day4/tests.csv`](./Day4/tests.csv)
+- **Domain:** Spice Hub Restaurant (End-to-End Ordering Agent)
+- **Concepts & Implementation:**
+  - **LangChain Agent & Groq Setup:** Initializing `ChatGroq` (`openai/gpt-oss-20b`, `temperature=0.2`, `max_retries=3`) with `create_agent` and a `chat()` wrapper maintaining message history.
+  - **Pydantic Schemas & Structured Output:** Defining `Order` (strict `Literal` menu items, `quantity >= 1`, `dine-in`/`takeaway`) and `OrderExtraction` (optional fields) models, and testing `llm.with_structured_output(OrderExtraction)` on complete, partial, and invalid customer messages.
+  - **Custom Tools & Google Sheets Logging:** Implementing `@tool` functions `get_price`, `check_availability` (backed by `MENU` and `AVAILABILITY`), and `log_order` (validating confirmed orders via `Order` and appending rows to a `"Spice Hub Orders"` Google Sheet via `gspread` and Colab auth).
+  - **Automated Testing & Execution Tracing:** Running 8 test scenarios from [`Day4/tests.csv`](./Day4/tests.csv) and saving outputs to `test_results.csv`, inspecting agent execution traces (`pretty_print()`, AI message and tool call counts), and running a tool-renaming experiment (`tool1` vs `get_price`).
+  - **Knowledge Base Output:** Generating `restaurant_facts.txt` with 20 structured restaurant facts covering hours, pricing, payment methods (cash/UPI), and ordering policies.
