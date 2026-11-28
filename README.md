@@ -44,3 +44,17 @@ Repository for daily tasks, progressive agent architectures, and hands-on implem
   - **Custom Tools & Google Sheets Logging:** Implementing `@tool` functions `get_price`, `check_availability` (backed by `MENU` and `AVAILABILITY`), and `log_order` (validating confirmed orders via `Order` and appending rows to a `"Spice Hub Orders"` Google Sheet via `gspread` and Colab auth).
   - **Automated Testing & Execution Tracing:** Running 8 test scenarios from [`Day4/tests.csv`](./Day4/tests.csv) and saving outputs to `test_results.csv`, inspecting agent execution traces (`pretty_print()`, AI message and tool call counts), and running a tool-renaming experiment (`tool1` vs `get_price`).
   - **Knowledge Base Output:** Generating `restaurant_facts.txt` with 20 structured restaurant facts covering hours, pricing, payment methods (cash/UPI), and ordering policies.
+
+### [DAY 5] RAG Knowledge Base, Semantic Search & Conversation Memory
+- **Notebook:** [\`Day5/agentic_AI_day5.ipynb\`](./Day5/agentic_AI_day5.ipynb)
+- **Domain:** Spice Hub Restaurant (Knowledge-Based Conversational Agent)
+- **Concepts & Implementation:**
+  - **Retrieval-Augmented Generation (RAG):** Building a restaurant knowledge base using 20 FAQ entries covering menu items, prices, opening hours, payment methods, services, and restaurant policies.
+  - **Text Embeddings:** Using Sentence Transformers (\`all-MiniLM-L6-v2\`) to convert restaurant FAQ documents and customer queries into numerical vector embeddings.
+  - **Vector Database & Semantic Search:** Implementing FAISS (\`IndexFlatIP\`) for efficient similarity-based retrieval of relevant restaurant information using normalized embeddings.
+  - **Custom RAG Tool:** Creating a \`search_faq()\` tool with LangChain's \`@tool\` decorator to retrieve relevant answers from the knowledge base and handle questions when information is unavailable.
+  - **Agent Memory & Checkpointing:** Integrating LangGraph's \`InMemorySaver\` checkpointer with \`create_agent\` to maintain conversation history across multiple interactions.
+  - **Thread-Based Conversation Management:** Implementing a \`chat(thread_id, text)\` function to maintain separate conversation contexts for different customers using unique thread IDs.
+  - **Tool Integration:** Combining the existing Day 4 business tools (\`get_price\`, \`check_availability\`, and \`log_order\`) with the new \`search_faq\` tool to create a knowledge-enabled restaurant assistant.
+  - **Testing & Validation:** Testing restaurant FAQs, menu prices, unknown questions, separate customer conversations, and memory retention across multiple interactions.
+  - **Interactive Chatbot:** Building a multi-turn conversational interface for restaurant queries and order processing with explicit customer confirmation before saving orders.
